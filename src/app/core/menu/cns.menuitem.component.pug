@@ -1,0 +1,15 @@
+ng-container
+    a([attr.href]="item.url", (click)="itemClick($event)", [ngClass]="item.class", *ngIf="(!item.routerLink || item.items) && item.visible !== false", [attr.target]="item.target", [attr.tabindex]="0", [attr.aria-label]="item.label", role="menuitem", pRipple)
+        i.layout-menuitem-icon([ngClass]="item.icon")
+        span {{item.label}}
+        span.menuitem-badge(*ngIf="item.badge") {{item.badge}}
+        i.pi.pi-fw.ml-auto([ngClass]="{'pi-angle-up' : active, 'pi-angle-down': !active}", *ngIf="item.items")
+
+    a((click)="itemClick($event)", *ngIf="(item.routerLink && !item.items) && item.visible !== false", [ngClass]="item.class",  [routerLink]="item.routerLink", routerLinkActive="active-menuitem-routerlink router-link-exact-active" ,[routerLinkActiveOptions]="{exact: !item.preventExact}" , [attr.target]="item.target" , [attr.tabindex]="0" , [attr.aria-label]="item.label", role="menuitem",pRipple)
+        i.layout-menuitem-icon([ngClass]="item.icon")
+        span {{item.label}}
+        i.pi.pi-fw.ml-auto([ngClass]="{'pi-angle-up' : active, 'pi-angle-down': !active}", *ngIf="item.items")
+
+    ul(role="menu", *ngIf="(item.items && active) && item.visible !== false", [@children]="active ? 'visibleAnimated' : 'hiddenAnimated'")
+        .item(*ngFor="let child of item.items; let i = index;")
+            li(cns-menuitem,  role="none", [item]="child", [index]="i", [parentKey]="key", [ngClass]="child.badgeClass")

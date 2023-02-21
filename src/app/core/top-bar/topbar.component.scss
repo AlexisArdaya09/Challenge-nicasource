@@ -1,0 +1,67 @@
+:host {
+    .layout-topbar {
+        background-color: #d70021;
+
+        .layout-topbar-logo {
+            color: var(--surface-a);
+
+            .icon {
+                height: 5rem;
+                margin-right: 0.5rem;
+                margin-left: 3rem;
+            }
+        }
+
+        .layout-topbar-button {
+            color: var(--surface-a);
+
+            &:hover {
+                background-color: rgb(255 255 255 / 50%);
+            }
+        }
+
+        .user-name-label {
+            display: flex;
+            align-items: center;
+            color: #ffff;
+            font-weight: 700;
+            text-transform: capitalize;
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 0.5em;
+
+            .pi-user:before {
+                font-size: 22px;
+            }
+
+            &:hover {
+                background-color: rgb(255 255 255 / 50%);
+            }
+        }
+    }
+
+    .dev-banner {
+        height: 2vh;
+        display: flex;
+        z-index: 998;
+        align-items: center;
+        justify-content: center;
+        font-weight: bolder;
+        background: repeating-linear-gradient(-55deg, #ffff00, #ffff00 10px, #333 10px, #333 20px);
+        -webkit-text-stroke: 1px #534957;
+        color: #61ff00;
+        font-size: x-large;
+    }
+
+
+
+    @media (max-width: 960px) {
+        .layout-topbar {
+            .layout-topbar-logo {
+                .icon {
+                    margin-left: 1rem;
+                }
+            }
+        }
+    }
+}

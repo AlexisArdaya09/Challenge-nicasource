@@ -1,0 +1,25 @@
+.flex.flex-column
+    .layout-topbar
+        a.layout-topbar-logo(routerLink="")
+            img(src="assets/layout/images/logo-white.svg" alt="logo")
+            span Nica Source
+
+        .p-link.layout-menu-button.layout-topbar-button( (click)="appMain.toggleMenu($event)")
+            i.pi.pi-bars
+
+        a.-link.layout-topbar-menu-button.layout-topbar-button( (click)="appMain.toggleTopMenu($event)")
+            i.pi.pi-ellipsis-v
+            
+
+        .layout-topbar-menu([ngClass]="{'layout-topbar-menu-mobile-active':appMain.topMenuActive}")
+            //- This menu will display on Desktop
+            
+            .inline-flex.align-items-center.user-name-label((click)="menu.toggle($event)", *ngIf="!appMain.topMenuActive")
+                span(*ngIf="!appMain.topMenuActive") {{userName}}
+                i.p-link.pi.pi-user.ml-3
+            p-menu([showTransitionOptions]="'0ms'", [hideTransitionOptions]="'0ms'", #menu, [popup]="true", [model]="items", appendTo="body")
+
+            //- This menu will display on Table and Mobile
+            a.p-link.layout-topbar-button(*ngIf="appMain.topMenuActive", routerLink="/profile")
+                i.pi.pi-user
+                span Mi cuenta

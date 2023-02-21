@@ -1,0 +1,6 @@
+.layout-menu-container
+    ul.layout-menu(role="menu", (keydown)="onKeydown($event)" ,*ngFor="let item of model; let i = index;")
+        li.layout-menuitem-category(cns-menu,role="none")
+            .layout-menuitem-root-text([attr.aria-label]="item.label") {{item.label}}
+            ul(role="menu",  *ngFor="let child of item.items; let i = index;")
+                li(cns-menuitem,role="none",[item]="child", [index]="i")

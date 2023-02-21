@@ -4,6 +4,7 @@ import { AddEditCustomerComponent } from './add-edit-customer/add-edit-customer.
 import { ListCustomerComponent } from './list-customer/list-customer.component';
 import { ViewCustomerComponent } from './view-customer/view-customer.component';
 import { RouterModule, Routes } from '@angular/router';
+import { SharedModule } from 'src/app/shared/shared-module/shared.module';
 
 const routes: Routes = [
   {
@@ -36,8 +37,10 @@ const routes: Routes = [
     ListCustomerComponent,
     ViewCustomerComponent
   ],
-  imports: [CommonModule,
-    RouterModule.forChild(routes)
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes),
+    SharedModule
   ],
 })
 export class CustomerModule { }

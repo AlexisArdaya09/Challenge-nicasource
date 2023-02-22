@@ -15,13 +15,19 @@ export class CustomerService {
 
   constructor() { }
 
+  getRamdomStatus() {
+    const status = ['active', 'pending', 'inactive'];
+    const randomIndex = Math.floor(Math.random() * status.length);;
+    return status[randomIndex];
+  }
+
   generateInitData() {
     for (let index = 1; index <= this.numberInitData; index++) {
       const customer: Customer = {
         id: uuid.v4(),
         firstName: `Alexis ${index}`,
         lastName: `Ardaya ${index}`,
-        status: 'active',
+        status: this.getRamdomStatus(),
         email: 'alexisardaya@gmail.com',
         phone: '76646695'
       }

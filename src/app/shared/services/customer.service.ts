@@ -22,11 +22,14 @@ export class CustomerService {
   }
 
   generateInitData() {
+    this.customers = JSON.parse(localStorage.getItem('customers'));
+    if (this.customers.length > 0) return;
+
     for (let index = 1; index <= this.numberInitData; index++) {
       const customer: Customer = {
         id: uuid.v4(),
-        firstName: `Alexis ${index}`,
-        lastName: `Ardaya ${index}`,
+        firstName: `Alexis${index}`,
+        lastName: `Ardaya${index}`,
         status: this.getRamdomStatus(),
         email: 'alexisardaya@gmail.com',
         phone: '76646695'

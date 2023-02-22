@@ -1,6 +1,6 @@
 import { Customer } from "./customer.interface"
 
-export interface customerState {
+export interface CustomerState {
     loading: boolean,
     customers: ReadonlyArray<Customer>
 }

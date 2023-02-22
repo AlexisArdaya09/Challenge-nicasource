@@ -1,8 +1,12 @@
+import { Statement } from '@angular/compiler';
 import { createReducer, on } from '@ngrx/store';
-import { customerState } from 'src/app/shared/models/customer.state';
-import { loadCustomers, loadedCustomers } from '../actions/customer.action';
+import { CustomerState } from 'src/app/shared/models/customer.state';
+import { loadCustomers, loadedCustomers} from '../actions/customer.actions';
 
-export const initialState: customerState = { loading: false, customers: [] }
+export const initialState: CustomerState = { 
+    loading: false, 
+    customers: [],
+}
 
 export const customerReducer = createReducer(
     initialState,

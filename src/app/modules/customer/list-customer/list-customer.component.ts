@@ -4,7 +4,7 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { selectCustomerLoading, selectCustomerList } from '../../../state/selectors/customer.selectors';
 import { AppState } from '../../../state/app.state';
 import { Customer } from 'src/app/shared/models/customer.interface';
-import { loadCustomers } from '../../../state/actions/customer.action';
+import { loadCustomers } from '../../../state/actions/customer.actions';
 
 @Component({
   selector: 'cns-list-customer',

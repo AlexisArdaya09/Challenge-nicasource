@@ -7,7 +7,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppState, ROOT_REDUCERS } from './state/app.state';
 import { EffectsModule } from '@ngrx/effects';
 import { CustomerEffects } from './state/effects/customer.effects';
-import { loadInitialCustomerData } from './state/actions/customer.action';
+import { loadInitialCustomerData } from './state/actions/customer.actions';
 
 
 @NgModule({

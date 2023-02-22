@@ -4,7 +4,7 @@ import { AddEditCustomerComponent } from './add-edit-customer/add-edit-customer.
 import { ListCustomerComponent } from './list-customer/list-customer.component';
 import { ViewCustomerComponent } from './view-customer/view-customer.component';
 import { RouterModule, Routes } from '@angular/router';
-import { SharedModule } from 'src/app/shared/shared-module/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 const routes: Routes = [
   {

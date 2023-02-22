@@ -1,1 +1,58 @@
-<p>list-customer works!</p>
+.grid
+    .col-12
+        .card.position-relative
+            p-toast
+            p-toolbar(styleClass="mb-4")
+                .p-toolbar-group-left.flex.flex-wrap
+                    .section-title Customers
+            cns-loader(*ngIf="isLoading")
+            p-table(
+                #dt,
+                [value]="customers",
+                responsiveLayout="scroll",
+                [rows]="5",
+                [paginator]="true",
+                [rowsPerPageOptions]= "rowsPerPageOptions",
+                selectionMode="single",
+                [rowHover]="true",
+                [globalFilterFields]="['lastName']",
+                [scrollable]="true",
+                [rowTrackBy]="trackByFunc",
+                dataKey="id")
+                
+                ng-template(pTemplate="summary")
+                    .flex.align-items-center.justify-content-between
+                        | Total Customers: {{customers ? customers.length : 0 }}
+                ng-template(pTemplate="header")
+                    tr
+                        th ID
+                        th First Name
+                        th Last Name
+                        th Phone
+                        th Email
+                        th Status
+                ng-template(pTemplate="body" let-customer)
+                    tr
+                        td(style="width:14%; min-width:10rem;")
+                            span(class="p-column-title") ID 
+                            | {{customer.id}}
+                        td(style="width:14%; min-width:10rem;")
+                            span(class="p-column-title") First Name 
+                            | {{customer.firstName}}
+                        td(style="width:14%; min-width:10rem;")
+                            span(class="p-column-title") Last Name 
+                            | {{customer.lastName}}
+                        td(style="width:14%; min-width:10rem;")
+                            span(class="p-column-title") Phone 
+                            | {{customer.phone}}
+                        td(style="width:14%; min-width:10rem;")
+                            span(class="p-column-title") Email 
+                            | {{customer.email}}
+                        td(style="width:8%; min-width:10rem;")
+                            span(class="p-column-title") Status 
+                            .cap_word.status-badge([class]="'status-' + customer.status")
+                                |{{customer.status}}
+                ng-template(pTemplate="emptymessage" let-columns)
+                    tr
+                        td([attr.colspan]="customers.length")
+                            | No records found

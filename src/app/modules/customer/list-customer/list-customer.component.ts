@@ -37,9 +37,7 @@ export class ListCustomerComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe))
       .subscribe({
         next: (customers: Customer[]) => {
-          if (customers.length > 0) {
             this.customers = customers;
-          }
         }
       })
   }
@@ -52,5 +50,4 @@ export class ListCustomerComponent implements OnInit, OnDestroy {
   trackByFunc(index, customer) {
     return customer.id;
   }
-
 }

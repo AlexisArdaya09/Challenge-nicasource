@@ -5,6 +5,8 @@
             p-toolbar(styleClass="mb-4")
                 .p-toolbar-group-left.flex.flex-wrap
                     .section-title Customers
+                .p-toolbar-group-right
+                    button.p-button-danger.mr-2(pButton, pRipple, label="Nuevo" icon="pi pi-plus" routerLink="/customer/create")
             cns-loader(*ngIf="isLoading")
             p-table(
                 #dt,
@@ -54,5 +56,5 @@
                                 |{{customer.status}}
                 ng-template(pTemplate="emptymessage" let-columns)
                     tr
-                        td([attr.colspan]="customers.length")
+                        td([attr.colspan]="6")
                             | No records found

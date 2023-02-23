@@ -11,7 +11,6 @@ import { Customer } from '../models/customer.interface';
 export class CustomerService {
 
   private numberInitData = 20;
-  private customers: Customer[] = [];
 
   constructor() { }
 
@@ -22,8 +21,8 @@ export class CustomerService {
   }
 
   generateInitData() {
-    this.customers = JSON.parse(localStorage.getItem('customers'));
-    if (this.customers.length > 0) return;
+    const customers = JSON.parse(localStorage.getItem('customers')) || [];
+    if (customers && customers.length > 0) return;
 
     for (let index = 1; index <= this.numberInitData; index++) {
       const customer: Customer = {
@@ -35,17 +34,28 @@ export class CustomerService {
         phone: '76646695'
       }
 
-      this.customers.push(customer);
+      customers.push(customer);
     }
 
-    localStorage.setItem('customers', JSON.stringify(this.customers));
+    localStorage.setItem('customers', JSON.stringify(customers));
   }
 
 
   getCustomers(): Observable<Customer[]> {
-    this.customers = JSON.parse(localStorage.getItem('customers'));
+    const customers = JSON.parse(localStorage.getItem('customers'));
 
-    return of(this.customers).pipe(
+    return of(customers).pipe(
+      delay(1500)
+    )
+  }
+
+  create(customer: Customer): Observable<Customer> {
+    const customers = JSON.parse(localStorage.getItem('customers'));
+    customers.push({...customer, id : uuid.v4()});
+    console.log(customers)
+    localStorage.setItem('customers', JSON.stringify(customers));
+
+    return of(customer).pipe(
       delay(1500)
     )
   }

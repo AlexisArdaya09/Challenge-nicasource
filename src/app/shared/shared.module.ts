@@ -10,6 +10,9 @@ import { VirtualScrollerModule } from 'primeng/virtualscroller';
 import { ToolbarModule } from 'primeng/toolbar';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextModule } from 'primeng/inputtext';
 
 
 @NgModule({
@@ -24,7 +27,10 @@ import { MessageService } from 'primeng/api';
         ConfirmDialogModule,
         VirtualScrollerModule,
         ToolbarModule,
-        KeyFilterModule
+        KeyFilterModule,
+        ButtonModule,
+        DropdownModule,
+        InputTextModule
     ],
     providers: [MessageService],
     declarations: [],
@@ -39,7 +45,10 @@ import { MessageService } from 'primeng/api';
         ConfirmDialogModule,
         VirtualScrollerModule,
         ToolbarModule,
-        KeyFilterModule
+        KeyFilterModule,
+        ButtonModule,
+        DropdownModule,
+        InputTextModule
     ],
 })
 export class SharedModule { }

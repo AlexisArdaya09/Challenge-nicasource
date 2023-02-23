@@ -13,3 +13,13 @@ export const selectCustomerLoading = createSelector(
     selectCustomersFeature,
     (state: CustomerState) => state.loading
 )
+
+export const selectSaveCustomerStatus = createSelector(
+    selectCustomersFeature,
+    (state: CustomerState) => {
+        return {
+            error: state.error,
+            loaded: state.loaded
+        }
+    }
+)

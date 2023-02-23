@@ -2,27 +2,37 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
 import { CustomerService } from 'src/app/shared/services/customer.service';
 import { EMPTY } from 'rxjs';
-import { map, mergeMap, catchError, tap } from 'rxjs/operators';
-import { ActionsEnum } from '../actions/customer.actions';
+import { map, mergeMap, catchError, tap, switchMap } from 'rxjs/operators';
+import { invokeSaveNewCustomer, loadCustomers, loadedCustomers, loadInitialCustomerData, saveCustomerSuccess, saveCustomerError } from '../actions/customer.actions';
+import { Customer } from 'src/app/shared/models/customer.interface';
 
 @Injectable()
 export class CustomerEffects {
 
     loadInitialCustomerData$ = createEffect(() => this.actions$.pipe(
-        ofType(ActionsEnum.LOAD_INITIAL_CUSTOMER_DATA),
+        ofType(loadInitialCustomerData),
         tap(() => {
             this.customerService.generateInitData();
         })
     ), { dispatch: false });
 
     loadCustomers$ = createEffect(() => this.actions$.pipe(
-        ofType(ActionsEnum.LOAD_CUSTOMERS),
+        ofType(loadCustomers),
         mergeMap(() => this.customerService.getCustomers()
             .pipe(
-                map(customers => ({ type: ActionsEnum.LOADED_CUSTOMERS, customers })),
+                map((customers: Customer[]) => loadedCustomers({customers})),
                 catchError(() => EMPTY)
             )
         ),
+    ));
+
+    saveNewCustomer$ = createEffect(() => this.actions$.pipe(
+        ofType(invokeSaveNewCustomer),
+        switchMap((action) => this.customerService.create(action.newCustomer)
+            .pipe(
+                map((data) => saveCustomerSuccess({response: data}),
+                catchError(async (error) => saveCustomerError({ error: 'Customer error on save.' }))
+            ))),
     ));
 
     constructor(

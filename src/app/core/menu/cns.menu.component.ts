@@ -17,7 +17,7 @@ export class CnsMenuComponent implements OnInit {
             {
                 label: 'Challenge-Admin',
                 items:[
-                    {label: 'Customer',icon: 'pi pi-fw pi-user', routerLink: ['/customer']},
+                    {label: 'Customers',icon: 'pi pi-fw pi-user', routerLink: ['/customer']},
                     
                 ]
             }

@@ -1,1 +1,51 @@
-<p>add-edit-customer works!</p>
+.grid
+    .col-12
+        .card
+            p-toast
+            p-toolbar(styleClass="mb-4")
+                .p-toolbar-group-left.flex.flex-wrap
+                    .section-title Create Customer
+                .p-toolbar-group-right
+                    button.p-button-danger.mr-2(pButton, pRipple, label="Volver" icon="pi pi-angle-left" routerLink="/customer")
+
+            .col-12
+                .card.card-background-form.position-relative
+                    cns-loader(*ngIf="isLoading")
+                    .form-container
+                        form.p-fluid.p-formgrid.grid([formGroup]="customerForm")
+                            .field.col-12(class="md:col-12")
+                                .section-title-form Customer information
+                            .margin-form.col-12.p-formgrid.grid
+                                .field.col-12(class="md:col-6")
+                                    label(htmlFor="name") First Name
+                                    input(pInputText, id="name" formControlName="firstName" type="text")
+                                .field.col-12(class="md:col-6")
+                                    label(htmlFor="name") Last Name
+                                    input(pInputText, id="name" formControlName="lastName" type="text")
+                                .field.col-12(class="md:col-6")
+                                    label(htmlFor="name") Email
+                                    input(pInputText, id="name" formControlName="email" type="text")
+                                .field.col-12(class="md:col-6")
+                                    label(htmlFor="name") Phone
+                                    input(pInputText, id="name" formControlName="phone" type="text")
+                                .field.col-12(class="md:col-6")
+                                    label(htmlFor="name") Status
+                                    p-dropdown(
+                                        [options]="statusList" 
+                                        formControlName="status"  
+                                        optionLabel="name",
+                                        optionValue="id",
+                                        [showClear]="true",
+                                        [filter]="true", filterBy="name",
+                                        placeholder="Select status")
+
+                            p-divider.col-12(layout="horizontal")
+
+                        button.p-button-danger.mr-2(
+                            pButton, 
+                            pRipple, 
+                            label="Guardar",
+                            icon="pi pi-save",
+                            (click)="save()",
+                            [loading]="isLoading",
+                            [disabled]="isLoading || !customerForm.valid")

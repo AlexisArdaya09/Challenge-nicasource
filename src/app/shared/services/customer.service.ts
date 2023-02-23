@@ -45,18 +45,49 @@ export class CustomerService {
     const customers = JSON.parse(localStorage.getItem('customers'));
 
     return of(customers).pipe(
-      delay(1500)
+      delay(1000)
     )
   }
 
   create(customer: Customer): Observable<Customer> {
     const customers = JSON.parse(localStorage.getItem('customers'));
     customers.push({...customer, id : uuid.v4()});
-    console.log(customers)
     localStorage.setItem('customers', JSON.stringify(customers));
 
     return of(customer).pipe(
-      delay(1500)
+      delay(1000)
     )
+  }
+
+  getCustomerById(customerId: string): Observable<Customer> {
+    let response;
+    const customers = JSON.parse(localStorage.getItem('customers'));
+    const customerById = customers.filter(customer => customer.id === customerId);
+    
+    if (customerById.length > 0){
+      response = customerById[0]
+    }else{
+      response = null;
+      throw new Error('Customer do not exists.');
+    }
+    return of(response).pipe(
+      delay(1000)
+    )
+  }
+
+  updateCustomer(customer: Customer): Observable<Customer> {
+    try {
+      const customers = JSON.parse(localStorage.getItem('customers'));
+      const newCustomers = customers.filter(item => item.id !== customer.id);
+
+      newCustomers.unshift(customer);
+      localStorage.setItem('customers', JSON.stringify(newCustomers));
+
+      return of(customer).pipe(
+        delay(1000)
+      )
+    }catch(err) {
+      throw new Error(err);
+    }
   }
 }

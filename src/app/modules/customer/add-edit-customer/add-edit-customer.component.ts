@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { MessageService } from 'primeng/api';
 import { Subject, takeUntil } from 'rxjs';
 import { AppState } from 'src/app/state/app.state';
-import { selectCustomerLoading, selectSaveCustomerStatus } from 'src/app/state/selectors/customer.selectors';
+import { selectCustomerLoading, selectGetCustomerByIdStatus, selectSaveCustomerStatus } from 'src/app/state/selectors/customer.selectors';
 import { Customer, StatusList } from '../../../shared/models/customer.interface';
-import { invokeSaveNewCustomer } from '../../../state/actions/customer.actions';
+import { invokeSaveNewCustomer, invokeGetCustomerById, invokeUpdateCustomer } from '../../../state/actions/customer.actions';
 
 @Component({
   selector: 'cns-add-edit-customer',
@@ -25,16 +25,18 @@ export class AddEditCustomerComponent implements OnInit, OnDestroy {
     status: ['', Validators.required],
   });
   public customerId: string;
+  public isEdit = false;
   public statusList = StatusList;
   public isLoading = false;
 
   private unsubscribe: Subject<boolean> = new Subject<boolean>();
 
   constructor(
-      private fb: FormBuilder,
-      private store: Store<AppState>,
-      private messageService: MessageService,
-      private router: Router) { }
+    private fb: FormBuilder,
+    private store: Store<AppState>,
+    private messageService: MessageService,
+    private router: Router,
+    private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.store.select(selectCustomerLoading).pipe(takeUntil(this.unsubscribe))
@@ -43,17 +45,38 @@ export class AddEditCustomerComponent implements OnInit, OnDestroy {
           this.isLoading = isLoading;
         }
       });
-    
+
     this.store.select(selectSaveCustomerStatus).pipe(takeUntil(this.unsubscribe))
       .subscribe({
         next: (status) => {
-          console.log(status)
-          if(status.loaded){
+          if (status.loaded) {
             this.router.navigate(['/customer']);
           }
-          if(status.error){
-            this.messageService.add({severity:'error', summary:'Save Customer', detail:status.error});
+          if (status.error) {
+            this.messageService.add({ severity: 'error', summary: 'Save Customer', detail: status.error });
           }
+        }
+      });
+
+    this.store.select(selectGetCustomerByIdStatus).pipe(takeUntil(this.unsubscribe))
+      .subscribe({
+        next: (status) => {
+          if (status.customerSelected) {
+            this.customerForm.patchValue(status.customerSelected);
+          }
+          if (status.error) {
+            this.messageService.add({ severity: 'error', summary: 'Get Customer Detail', detail: status.error });
+          }
+        }
+      });
+
+    this.route.params
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(async params => {
+        this.customerId = params['id'];
+        if (this.customerId) {
+          this.isEdit = true;
+          this.store.dispatch(invokeGetCustomerById({ customerId: this.customerId }))
         }
       });
   }
@@ -63,8 +86,11 @@ export class AddEditCustomerComponent implements OnInit, OnDestroy {
     this.unsubscribe.unsubscribe();
   }
 
-  save(){
-    const newCustomer : Customer = this.customerForm.value;
-    this.store.dispatch(invokeSaveNewCustomer({newCustomer}));
+  save() {
+    if (this.customerId) {
+      this.store.dispatch(invokeUpdateCustomer({ customer: this.customerForm.value }));
+    } else {
+      this.store.dispatch(invokeSaveNewCustomer({ newCustomer: this.customerForm.value }));
+    }
   }
 }

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { CustomerService } from 'src/app/shared/services/customer.service';
 import { EMPTY } from 'rxjs';
 import { map, mergeMap, catchError, tap, switchMap } from 'rxjs/operators';
-import { invokeSaveNewCustomer, loadCustomers, loadedCustomers, loadInitialCustomerData, saveCustomerSuccess, saveCustomerError } from '../actions/customer.actions';
+import { invokeSaveNewCustomer, loadCustomers, loadedCustomers, loadInitialCustomerData, saveCustomerSuccess, saveCustomerError, invokeGetCustomerById, getCustomerByIdSuccess, getCustomerByIdError, invokeUpdateCustomer, updateCustomerSuccess, updateCustomerError } from '../actions/customer.actions';
 import { Customer } from 'src/app/shared/models/customer.interface';
 
 @Injectable()
@@ -20,7 +20,7 @@ export class CustomerEffects {
         ofType(loadCustomers),
         mergeMap(() => this.customerService.getCustomers()
             .pipe(
-                map((customers: Customer[]) => loadedCustomers({customers})),
+                map((customers: Customer[]) => loadedCustomers({ customers })),
                 catchError(() => EMPTY)
             )
         ),
@@ -30,9 +30,28 @@ export class CustomerEffects {
         ofType(invokeSaveNewCustomer),
         switchMap((action) => this.customerService.create(action.newCustomer)
             .pipe(
-                map((data) => saveCustomerSuccess({response: data}),
-                catchError(async (error) => saveCustomerError({ error: 'Customer error on save.' }))
-            ))),
+                map((data) => saveCustomerSuccess({ response: data }),
+                    catchError(async (error) => saveCustomerError({ error: 'Customer error on save.' }))
+                ))),
+    ));
+
+    getCustomerById$ = createEffect(() => this.actions$.pipe(
+        ofType(invokeGetCustomerById),
+        switchMap((action) => this.customerService.getCustomerById(action.customerId)
+            .pipe(
+                map((data) => getCustomerByIdSuccess({ response: data }),
+                    catchError(async (error) => getCustomerByIdError({ error }))
+                )))
+    ));
+
+    updateCustomer$ = createEffect(()=> this.actions$.pipe(
+        ofType(invokeUpdateCustomer),
+        switchMap((action) => this.customerService.updateCustomer(action.customer)
+            .pipe(
+                map((data) => updateCustomerSuccess({response: data}),
+                catchError(async (error) => updateCustomerError({ error})))
+            )
+        )
     ));
 
     constructor(

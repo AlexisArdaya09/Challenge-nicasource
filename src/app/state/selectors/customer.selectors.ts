@@ -23,3 +23,14 @@ export const selectSaveCustomerStatus = createSelector(
         }
     }
 )
+
+export const selectGetCustomerByIdStatus = createSelector(
+    selectCustomersFeature,
+    (state: CustomerState) => {
+        return {
+            error: state.error,
+            loaded: state.loaded,
+            customerSelected: state.customerSelected
+        }
+    }
+)

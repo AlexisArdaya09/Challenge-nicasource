@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, Subject, takeUntil } from 'rxjs';
-import { selectCustomerLoading, selectCustomerList } from '../../../state/selectors/customer.selectors';
+import { Subject, takeUntil } from 'rxjs';
+import { selectCustomerLoading, selectCustomerList, selectDeleteCustomerStatus } from '../../../state/selectors/customer.selectors';
 import { AppState } from '../../../state/app.state';
 import { Customer } from 'src/app/shared/models/customer.interface';
-import { loadCustomers } from '../../../state/actions/customer.actions';
+import { loadCustomers, invokeDeleteCustomer } from '../../../state/actions/customer.actions';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'cns-list-customer',
@@ -19,9 +20,11 @@ export class ListCustomerComponent implements OnInit, OnDestroy {
 
   private unsubscribe: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private store: Store<AppState>,) {
-
-  }
+  constructor(
+    private store: Store<AppState>,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
+    ) {}
 
   ngOnInit(): void {
     this.store.dispatch(loadCustomers());
@@ -37,9 +40,22 @@ export class ListCustomerComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe))
       .subscribe({
         next: (customers: Customer[]) => {
-            this.customers = customers;
+          this.customers = customers;
         }
       })
+
+    this.store.select(selectDeleteCustomerStatus)
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe({
+        next: (status) => {
+          if (status.loaded) {
+            this.messageService.add({ severity: 'success', summary: 'Delete Customer', detail: 'Customer successfully deleted.' });
+          }
+          if (status.error) {
+            this.messageService.add({ severity: 'error', summary: 'Delete Customer', detail: status.error });
+          }
+        }
+      });
   }
 
   ngOnDestroy() {
@@ -49,5 +65,20 @@ export class ListCustomerComponent implements OnInit, OnDestroy {
 
   trackByFunc(index, customer) {
     return customer.id;
+  }
+
+  onDelete(customer: Customer) {
+    this.confirmationService.confirm({
+      key: 'confirmDelete',
+      message: `Are you sure to delete "${customer.firstName} ${customer.lastName}"?`,
+      accept: () => {
+        this.isLoading = true;
+        this.delete(customer.id);
+      },
+    });
+  }
+
+  delete(customerId: string) {
+    this.store.dispatch(invokeDeleteCustomer({ customerId }));
   }
 }

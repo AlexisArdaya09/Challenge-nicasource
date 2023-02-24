@@ -1,7 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { CustomerState } from 'src/app/shared/models/customer.state';
 import * as customerActions from '../actions/customer.actions';
-import { getCustomerByIdError } from '../actions/customer.actions';
 
 export const initialState: CustomerState = {
     loading: false,
@@ -88,6 +87,30 @@ export const customerReducer = createReducer(
         }
     }),
     on(customerActions.updateCustomerError, (state, { error }) => {
+        return {
+            ...state,
+            loading: false,
+            loaded: false,
+            error
+        }
+    }),
+    on(customerActions.invokeDeleteCustomer, (state) => {
+        return {
+            ...state,
+            loading: true,
+            loaded: false
+        }
+    }),
+    on(customerActions.deleteCustomerSuccess, (state, { response, customerId }) => {
+        const newCustomers = state.customers.filter(customer => customer.id !== customerId);
+        return {
+            ...state,
+            loading: false,
+            loaded: true,
+            customers: newCustomers
+        }
+    }),
+    on(customerActions.deleteCustomerError, (state, { error }) => {
         return {
             ...state,
             loading: false,

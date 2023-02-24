@@ -1,3 +1,5 @@
+p-confirmDialog(header="Confirmation",key="confirmDelete",icon="pi pi-exclamation-triangle",message="Are you sure you want to continue?",
+    acceptLabel="Si", [style]="{width: '350px'}",acceptButtonStyleClass="p-button-text",rejectButtonStyleClass="p-button-text")
 .grid
     .col-12
         .card.position-relative
@@ -58,7 +60,8 @@
                         td(style="width:14%; min-width: 12rem;")
                             .flex
                                 button.p-button-rounded.p-button-danger.ml-2.mr-2(pButton, pRipple, icon="pi pi-pencil", [routerLink]="['/customer', customer.id, 'edit']", pTooltip="Editar")
+                                button.p-button-rounded.p-button-danger(pButton, pRipple, icon="pi pi-trash", (click)="onDelete(customer)", pTooltip="Delete")
                 ng-template(pTemplate="emptymessage" let-columns)
                     tr
-                        td([attr.colspan]="6")
+                        td([attr.colspan]="7")
                             | No records found

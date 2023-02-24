@@ -16,7 +16,11 @@ enum ActionsEnum {
 
     INVOKE_UPDATE_CUSTOMER = '[Customer List] Invoke update customer',
     UPDATE_CUSTOMER_SUCCESS = '[Customer List] Update customer succes',
-    UPDATE_CUSTOMER_ERROR = '[Customer List] Update customer error'
+    UPDATE_CUSTOMER_ERROR = '[Customer List] Update customer error',
+
+    INVOKE_DELETE_CUSTOMER = '[Customer List] Invoke delete customer',
+    DELETE_CUSTOMER_SUCCESS = '[Customer List] Delete customer succes',
+    DELETE_CUSTOMER_ERROR = '[Customer List] Delete customer error'
 }
 
 export const loadInitialCustomerData = createAction(
@@ -76,5 +80,21 @@ export const updateCustomerSuccess = createAction(
 
 export const updateCustomerError = createAction(
     ActionsEnum.UPDATE_CUSTOMER_ERROR,
+    props<{ error: string }>()
+)
+
+export const invokeDeleteCustomer = createAction(
+    ActionsEnum.INVOKE_DELETE_CUSTOMER,
+    props<{ customerId: string }>(
+    )
+)
+
+export const deleteCustomerSuccess = createAction(
+    ActionsEnum.DELETE_CUSTOMER_SUCCESS,
+    props<{ customerId: string, response: string }>()
+)
+
+export const deleteCustomerError = createAction(
+    ActionsEnum.DELETE_CUSTOMER_ERROR,
     props<{ error: string }>()
 )

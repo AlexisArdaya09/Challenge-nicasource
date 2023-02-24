@@ -9,10 +9,11 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { VirtualScrollerModule } from 'primeng/virtualscroller';
 import { ToolbarModule } from 'primeng/toolbar';
 import { KeyFilterModule } from 'primeng/keyfilter';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
+import { TooltipModule } from 'primeng/tooltip';
 
 
 @NgModule({
@@ -30,9 +31,10 @@ import { InputTextModule } from 'primeng/inputtext';
         KeyFilterModule,
         ButtonModule,
         DropdownModule,
-        InputTextModule
+        InputTextModule,
+        TooltipModule
     ],
-    providers: [MessageService],
+    providers: [MessageService, ConfirmationService],
     declarations: [],
     exports: [
         ReactiveFormsModule,
@@ -48,7 +50,8 @@ import { InputTextModule } from 'primeng/inputtext';
         KeyFilterModule,
         ButtonModule,
         DropdownModule,
-        InputTextModule
+        InputTextModule,
+        TooltipModule
     ],
 })
 export class SharedModule { }

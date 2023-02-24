@@ -34,3 +34,13 @@ export const selectGetCustomerByIdStatus = createSelector(
         }
     }
 )
+
+export const selectDeleteCustomerStatus = createSelector(
+    selectCustomersFeature,
+    (state: CustomerState) => {
+        return {
+            error: state.error,
+            loaded: state.loaded,
+        }
+    }
+)

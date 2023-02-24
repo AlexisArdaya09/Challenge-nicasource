@@ -90,4 +90,20 @@ export class CustomerService {
       throw new Error(err);
     }
   }
+
+  deleteCustomer(customerId: string): Observable<any> {
+    let response;
+    const customers = JSON.parse(localStorage.getItem('customers'));
+    const customerById = customers.filter(item => item.id === customerId);
+    if (customerById.length > 0){
+      const newCustomers = customers.filter(item => item.id !== customerId);
+      localStorage.setItem('customers', JSON.stringify(newCustomers));
+      response = {message: 'Customer successfully deleted', customerId};
+    }else{
+      throw new Error('Customer do not exists.');
+    }
+    return of(response).pipe(
+      delay(1000)
+    )
+  }
 }

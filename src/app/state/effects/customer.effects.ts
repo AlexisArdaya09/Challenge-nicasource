@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { CustomerService } from 'src/app/shared/services/customer.service';
 import { EMPTY } from 'rxjs';
 import { map, mergeMap, catchError, tap, switchMap } from 'rxjs/operators';
-import { invokeSaveNewCustomer, loadCustomers, loadedCustomers, loadInitialCustomerData, saveCustomerSuccess, saveCustomerError, invokeGetCustomerById, getCustomerByIdSuccess, getCustomerByIdError, invokeUpdateCustomer, updateCustomerSuccess, updateCustomerError } from '../actions/customer.actions';
+import { invokeSaveNewCustomer, loadCustomers, loadedCustomers, loadInitialCustomerData, saveCustomerSuccess, saveCustomerError, invokeGetCustomerById, getCustomerByIdSuccess, getCustomerByIdError, invokeUpdateCustomer, updateCustomerSuccess, updateCustomerError, deleteCustomerSuccess, deleteCustomerError, invokeDeleteCustomer } from '../actions/customer.actions';
 import { Customer } from 'src/app/shared/models/customer.interface';
 
 @Injectable()
@@ -50,6 +50,16 @@ export class CustomerEffects {
             .pipe(
                 map((data) => updateCustomerSuccess({response: data}),
                 catchError(async (error) => updateCustomerError({ error})))
+            )
+        )
+    ));
+
+    deleteCustomer$ = createEffect(()=> this.actions$.pipe(
+        ofType(invokeDeleteCustomer),
+        switchMap((action) => this.customerService.deleteCustomer(action.customerId)
+            .pipe(
+                map((data:any) => deleteCustomerSuccess({response: data.message, customerId: data.customerId}),
+                catchError(async (error) => deleteCustomerError({ error })))
             )
         )
     ));
